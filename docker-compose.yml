@@ -28,7 +28,7 @@ services:
       KAFKA_CLUSTERS_O_BOOTSTRAPSERVERS: kafka:9092
       KAFKA_CLUSTERS_O_KSQLDBSERVER: http://ksqldbO:8088
   notification-db:
-    image: postgres
+    image: postgres:17-alpine
     container_name: notification-db
     environment:
       POSTGRES_DB: notificationsdb
@@ -40,7 +40,7 @@ services:
       - notification-db-data:/var/lib/postgresql
 
   discovery-service:
-    image: harsh3417/socialmedia/discovery-service
+    image: harsh3417/discovery-service:0.0.1-SNAPSHOT
     container_name: discovery-server
     networks:
       - social_media-network
@@ -48,7 +48,7 @@ services:
       - "8761:8761"
 
   notification-service:
-    image: harsh3417/socialmedia/notification-service
+    image: harsh3417/notification-service:0.0.1-SNAPSHOT
     container_name: notification-service
     networks:
       - social_media-network
@@ -58,7 +58,7 @@ services:
       - kafka
 
   posts-db:
-    image: postgres
+    image: postgres:17-alpine
     container_name: posts-db
     environment:
       POSTGRES_DB: postsDB
@@ -69,7 +69,7 @@ services:
     volumes:
       - posts-db-data:/var/lib/postgresql
   users-DB:
-    image: postgres
+    image: postgres:17-alpine
     container_name: users-DB
     environment:
       POSTGRES_DB: usersDB
@@ -92,7 +92,7 @@ services:
     volumes:
       - connections-db-data:/data
   posts-service:
-    image: harsh3417/socialmedia/post-service
+    image: harsh3417/post-service:0.0.1-SNAPSHOT
     container_name: posts-service
     networks:
       - social_media-network
@@ -101,7 +101,7 @@ services:
       - posts-db
       - kafka
   connections-service:
-    image: harsh3417/socialmedia/connection-service
+    image: harsh3417/post-service:0.0.1-SNAPSHOT
     container_name: connections-service
     networks:
       - social_media-network
@@ -111,14 +111,14 @@ services:
       - kafka
 
   api-gateway:
-    image: harsh3417/socialmedia/api-gateway
+    image: harsh3417/api-gateway:0.0.1-SNAPSHOT
     container_name: api-gateway
     networks:
       - social_media-network
     depends_on:
       - discovery-service
   user-service:
-    image: harsh3417/socialmedia/user-service
+    image: harsh3417/user-service:0.0.1-SNAPSHOT
     container_name: users-service
     networks:
       - social_media-network
